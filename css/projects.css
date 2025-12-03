@@ -1,0 +1,295 @@
+/* =============================== */
+/*         GLOBAL RESET            */
+/* =============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Arial', sans-serif;
+    /* 🌟 THEME: Default text color is light gray/white */
+    color: #EAEAEA;
+}
+
+/* 📌 STICKY FOOTER FIX */
+html, body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stacks children (header, main, footer) vertically */
+}
+
+body {
+    /* 🌟 THEME: Deep Black Background for Terminal Aesthetic */
+    background: #111111;
+    color: #EAEAEA;
+    line-height: 1.6;
+    overflow-y: scroll; 
+}
+
+/* =============================== */
+/*          NAVIGATION             */
+/* =============================== */
+
+header {
+    width: 100%;
+    /* 🌟 THEME: Darker Header Background */
+    background: #1B1B1B;
+    /* 🌟 THEME: Neon Cyan Border */
+    border-bottom: 1px solid #00BFA6;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 1px;
+    /* 🌟 THEME: Light text color */
+    color: #EAEAEA;
+    transition: 0.25s ease;
+}
+
+.nav-links li a:hover {
+    /* 🌟 THEME: Primary Accent Color: Cyan/Green */
+    color: #00FFC3;
+}
+
+
+/* =============================== */
+/*         MAIN CONTENT            */
+/* =============================== */
+
+main {
+    width: min(1200px, 92%);
+    margin: auto;
+    /* 📌 STICKY FOOTER FIX: This makes the main content take up all available vertical space */
+    flex-grow: 1;
+    padding-bottom: 60px;
+}
+
+h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+    /* 🌟 THEME: Accent color for main title */
+    color: #00FFC3; 
+    text-shadow: 0 0 5px rgba(0, 255, 195, 0.4);
+}
+
+h2 {
+    font-size: 26px;
+    margin: 40px 0 20px;
+    /* 🌟 THEME: Secondary accent color */
+    color: #00BFA6; 
+}
+
+/* Hero Section */
+.hero-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+.hero-section p {
+    font-size: 18px;
+    /* 🌟 THEME: Secondary text color */
+    color: #AAAAAA; 
+}
+
+
+/* =============================== */
+/*            PROJECT CARDS             */
+/* =============================== */
+
+.buttonContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.Quizbutton {
+    font-size: 2vw;
+    border-radius: 10px;
+    /* 🌟 THEME: Neon Cyan Border */
+    border: 2px solid #00BFA6;
+    cursor: pointer;
+    height: 27vh;
+    width: 25vw;
+    position: relative; 
+    overflow: hidden; 
+    text-decoration: none;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+    /* Text color is inherited from *{} */
+}
+
+.Quizbutton img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    z-index: 1; 
+    transition: transform 0.3s ease;
+}
+
+.Quizbutton span {
+    position: relative;
+    z-index: 2; 
+    text-align: center;
+    text-shadow:
+        -1.5px -1.5px 0 #000,
+        1.5px -1.5px 0 #000,
+        -1.5px 1.5px 0 #000,
+        1.5px 1.5px 0 #000;
+    color: white; /* Keep text white for contrast against background image */
+}
+
+.Quizbutton:hover {
+    transform: scale(1.05); 
+    /* 🌟 THEME: Brighter Neon Cyan on hover */
+    border-color: #00FFC3;
+}
+
+.projectCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 25vw;
+}
+
+.projectDesc {
+    font-size: 1vw;
+    text-align: justify;
+    text-justify: inter-word;
+    margin-top: 1vh;
+    line-height: 1.3;
+    width: 90%;
+    opacity: 0.85;
+    /* 🌟 THEME: Secondary text color */
+    color: #AAAAAA; 
+}
+
+
+/* =============================== */
+/*            FOOTER               */
+/* =============================== */
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 1.5rem 0;
+    
+    /* 🌟 THEME: Darker footer background and border */
+    background-color: #1B1B1B;
+    color: #AAAAAA;
+    border-top: 1px solid #333333;
+    /* 📌 STICKY FOOTER FIX: Push footer down */
+    margin-top: auto; 
+}
+
+footer p {
+    color: #AAAAAA;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+/* =============================== */
+/* 📱 MOBILE RESPONSIVE LAYOUT FIX */
+/* =============================== */
+@media screen and (max-width: 780px) {
+
+    body {
+        overflow-y: auto !important;
+        height: auto;
+    }
+
+    /* HEADER & NAVIGATION FIX: Ensures horizontal links and alignment */
+    header {
+        padding: 1.2rem 0;
+        justify-content: center;
+        align-items: center;
+        font-size: 2vw; 
+    }
+
+    nav {
+        width: 100%;
+        margin-top: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    ul.nav-links {
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: nowrap; /* Prevents header from shifting/wrapping */
+    }
+    
+    /* MAIN CONTENT AND PROJECT CARDS */
+    main {
+        width: 90%; /* Increase main width on mobile */
+        padding-bottom: 2rem;
+    }
+    
+    .hero-section {
+        margin-bottom: 20px;
+    }
+    
+    h1 {
+        font-size: 30px;
+    }
+
+    .hero-section p { /* Targets the subtitle-like paragraph under H1 */
+        font-size: 16px; 
+    }
+    
+    /* Project Card Layout: stacks vertically */
+    .buttonContainer {
+        flex-direction: column;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+        
+        /* 🌟 THE FIX: Centers the projectCard items (width: 90%) horizontally */
+        align-items: center; 
+    }
+
+    .projectCard {
+        width: 90%; /* Use a percentage for max width */
+    }
+
+    .Quizbutton {
+        width: 100%;
+        height: 250px; /* Use a fixed height for visual consistency on mobile */
+        font-size: 5vw;
+    }
+
+    .projectDesc {
+        font-size: 3.5vw; /* Make description larger for readability on small screen */
+        width: 90%;
+        margin-top: 0.5rem;
+        color: #AAAAAA; /* Ensure theme color is applied to mobile description */
+    }
+    
+    /* General element adjustments */
+    ul.nav-links a {
+        font-size: 2.5vw;
+    }
+
+    footer {
+        width: 100%;
+        padding: 1.2rem 0;
+        height: auto;
+    }
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nguyen_GEOG215_ProjectCheckIn_1 — Khoi Nguyen</title>
+    <link rel="stylesheet" href="./css/workingAge.css">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+<main>
+
+<!-- ========================== -->
+<!--         HEADER             -->
+<!-- ========================== -->
+
+<section class="project-header">
+    <h1>Spatial Analysis of Working-Age Population in North Carolina</h1>
+    <p class="subtitle">
+        Local Moran’s I (LISA) clustering of percent working-age (18–64) by census tract — Nguyen_GEOG215_ProjectCheckIn_1 — Khoi Nguyen (2025-05-29)
+    </p>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            This project maps and analyzes the geographic distribution of the working-age population (18–64) across North Carolina
+            census tracts using ACS estimates and Local Indicators of Spatial Association (LISA). By building spatial weights,
+            computing Local Moran’s I, and classifying cluster types (High–High, Low–Low, High–Low, Low–High), the analysis
+            identifies workforce-rich metropolitan areas and regions dominated by older or seasonal populations. Results highlight
+            urban concentration of working-age adults in Raleigh–Durham and Charlotte, and Low–Low clusters along coastal and
+            mountain counties. Findings inform workforce planning and spatial equity discussions.
+        </p>
+    </div>
+</section>
+
+<!-- ========================== -->
+<!--       MAP PLACEHOLDERS     -->
+<!-- ========================== -->
+
+<section class="figures">
+
+    <!-- MAP 1: Choropleth -->
+    <figure>
+        <img src="./images/PopLisaR/Choropleth_pct_working_age.webp" alt="Percent Working-Age Choropleth">
+        <figcaption>
+            <strong>Figure 1.</strong> Choropleth of percent working-age population (18–64) by census tract, North Carolina.
+            <br>Export: recommended 2400×1800 PNG.
+        </figcaption>
+    </figure>
+
+    <!-- MAP 2: LISA -->
+    <figure>
+        <img src="./images/PopLisaR/LISA_Clusters.webp" alt="LISA Cluster Map">
+        <figcaption>
+            <strong>Figure 2.</strong> LISA cluster map showing High–High, Low–Low, High–Low, Low–High, and non-significant tracts.
+        </figcaption>
+    </figure>
+
+    <!-- MAP 3: Histogram -->
+    <figure>
+        <img src="./images/PopLisaR/Histogram_pct_working_age.webp" alt="Histogram of Percent Working-Age">
+        <figcaption>
+            <strong>Figure 3.</strong> Distribution of percent working-age values across NC tracts (histogram).
+        </figcaption>
+    </figure>
+
+    <!-- MAP 4: Example Outliers -->
+    <figure>
+        <img src="./images/PopLisaR/Outlier_examples.webp" alt="LISA Outlier Examples">
+        <figcaption>
+            <strong>Figure 4.</strong> Example tracts classified as High–Low and Low–High illustrating localized demographic anomalies.
+        </figcaption>
+    </figure>
+
+</section>
+
+<!-- ========================== -->
+<!--         METHODS            -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Data & Methods</h2>
+    <p>
+        <strong>Data sources:</strong> American Community Survey (ACS 5-year estimates 2018–2022), TIGER/Line tract geometries for NC.
+        <br>
+        <strong>Software:</strong> R (RStudio), packages: <code>tidycensus</code>, <code>tigris</code>, <code>sf</code>, <code>spdep</code>, <code>rgeoda</code>, and <code>tmap</code>.
+    </p>
+
+    <h3>Key processing steps</h3>
+    <ol>
+        <li>Downloaded ACS sex/age variables for working-age groups (male and female 18–64) at tract level and summed them into a single working-age population variable.</li>
+        <li>Retrieved total population and calculated percent working-age = 100 × working_age_pop / total_pop.</li>
+        <li>Joined attribute data to NC tract geometries and cleaned large fields (removed <code>ALAND</code>/<code>AWATER</code> before shapefile export).</li>
+        <li>Built spatial weights using queen contiguity and computed Global Moran’s I to confirm significant spatial autocorrelation.</li>
+        <li>Computed Local Moran’s I (LISA), derived significance measures, and classified tracts into cluster types (HH, LL, HL, LH, Not significant).</li>
+        <li>Mapped results with tmap and produced figures for interpretation.</li>
+    </ol>
+</section>
+
+<!-- ========================== -->
+<!--          RESULTS           -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Results</h2>
+    <ul>
+        <li><strong>Global spatial autocorrelation:</strong> Global Moran’s I indicated significant clustering of percent working-age (Moran I ≈ 0.28, p &lt; 0.001).</li>
+        <li><strong>High–High clusters:</strong> Concentrated in metropolitan centers (Mecklenburg/Charlotte, Wake/Raleigh, Durham).</li>
+        <li><strong>Low–Low clusters:</strong> Appeared in coastal retirement regions and several mountainous/rural counties.</li>
+        <li><strong>Outliers (HL/LH):</strong> Identified localized tracts such as small urban pockets in otherwise low-density counties or low- working-age tracts embedded inside high-working-age surroundings (e.g., university or tourist zones).</li>
+        <li><strong>Descriptive stats:</strong> mean percent working-age ≈ 61.4%, SD ≈ 8.6% (N ≈ 2649 tracts; minor number of NAs handled).</li>
+    </ul>
+</section>
+
+<!-- ========================== -->
+<!--     INTERPRETATION         -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Interpretation & Implications</h2>
+    <p>
+        The LISA cluster map confirms that economic opportunity and urbanization explain much of the working-age population distribution.
+        High–High tracts cluster around job-rich urban corridors while Low–Low tracts correspond to retirement and low-employment regions
+        (coastal tourism, mountainous areas). Outlier tracts highlight places of rapid local change (growing towns, campuses, military housing).
+    </p>
+
+    <p>
+        <strong>Policy implications:</strong> Identifying working-age deserts helps target workforce development, transit investment, and economic revitalization
+        programs. Conversely, workforce concentrations suggest where housing, transit, and services need scaling.
+    </p>
+</section>
+
+<!-- ========================== -->
+<!--      LIMITATIONS           -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Limitations & Future Work</h2>
+    <ul>
+        <li>ACS estimates have margins of error at tract scale; small-sample variation can affect classification.</li>
+        <li>The analysis uses point-in-time ACS data; temporal trends (migration, seasonal shifts) are not explicitly modeled.</li>
+        <li>Future work: incorporate employment location data, commuting flows, or network-based accessibility measures to link where people live with where jobs are located.</li>
+    </ul>
+</section>
+
+<!-- ========================== -->
+<!--      REPRODUCIBILITY       -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Reproducibility & Code</h2>
+    <p>
+        All data retrieval, processing, and map exports were performed in R with documented scripts. Key steps included:
+        tidycensus calls to pull ACS variables, <code>sf</code>-based joins and cleaning, <code>poly2nb</code>/<code>nb2listw</code> for spatial weights,
+        <code>localmoran_perm</code> for LISA, and <code>tmap</code> for cartography. Code and maps can be shared upon request.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2025 Khoi Nguyen – GEOG 215 Project Check-In</p>
+</footer>
+
+</body>
+</html>

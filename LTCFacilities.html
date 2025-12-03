@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Geographic Access to LTC Facilities — Khoi Nguyen</title>
+    <link rel="stylesheet" href="./css/LCTFacilities.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+
+<main>
+    <!-- PROJECT TITLE + ABSTRACT -->
+    <section class="project-header">
+        <h1>Geographic Access to Long-Term Care Facilities</h1>
+        <p class="subtitle">A spatial assessment of elderly population density and LTC facility locations in Tokyo — Khoi Nguyen, GEOG 446</p>
+
+        <div class="abstract">
+            <h2>Abstract</h2>
+            <p>
+                Japan faces rapid population aging. This study evaluates spatial alignment between ward-level elderly density (65+) and long-term care (LTC)
+                facility locations in Tokyo. Using ward population data and geocoded facility points, I conducted choropleth mapping, overlay analysis, and
+                accessibility evaluation (ward-level overlays and counts). Results show central and many suburban wards are well-served, while peripheral wards
+                and specific wards (e.g., Ōshima and some outlying wards) reveal mismatches: high elderly density but limited LTC facilities. The analysis is
+                automated via ArcPy workflows for reproducibility and policy-focused mapping.
+            </p>
+        </div>
+    </section>
+
+    <!-- KEY MAPS -->
+    <section class="figures">
+        <figure>
+            <img src="./images/LTCFacilities/ElderPopDens.webp" alt="Elderly density per km2 by ward (placeholder)">
+            <figcaption>Elderly density per km² by ward — choropleth showing concentration of 65+ residents.</figcaption>
+        </figure>
+
+        <figure>
+            <img src="./images/LTCFacilities/GeneeralPopDens.webp" alt="General population density per km2 (placeholder)">
+            <figcaption>General population density per km² by ward — highlights differences with elderly distribution.</figcaption>
+        </figure>
+
+        <figure>
+            <img src="./images/LTCFacilities/FacilitiesOverlayPopDens65.webp" alt="LTC facility locations overlay (placeholder)">
+            <figcaption>Geocoded LTC facility locations overlaid on elderly density — identifies alignment and gaps.</figcaption>
+        </figure>
+    </section>
+
+    <!-- DATA & METHODS -->
+    <section class="section">
+        <h2>Data & Methods</h2>
+        <ul>
+            <li><strong>Population:</strong> Ward-level census data (Tokyo, 2020) — elderly counts (65+) and total population.</li>
+            <li><strong>Facilities:</strong> LTC facility locations (municipal records + geocoding workflow via Google Sheets).</li>
+            <li><strong>Processing:</strong> Datasets projected and cleaned in ArcGIS Pro; ward elderly density computed as (65+ / ward area km²).</li>
+            <li><strong>Analysis:</strong> Choropleth mapping, overlay counts (facilities within wards), and simple accessibility checks (facility counts vs elderly density). ArcPy scripts automated joins, density calculation, polygon→raster conversion, and map exports.</li>
+        </ul>
+    </section>
+
+    <!-- RESULTS -->
+    <section class="section">
+        <h2>Results (concise)</h2>
+        <ul>
+            <li>Choropleth maps show central wards concentrate both high total population and many elderly; some suburban wards have high elderly density as well.</li>
+            <li>Overlay analysis indicates central wards (e.g., Shinjuku, Minato) are well-covered with LTC facilities; many peripheral wards are sparsely served.</li>
+            <li>Notably, Ōshima (and a few other outlying wards/islands) displays relatively high elderly density but few or no LTC facilities despite infrastructure — a clear mismatch that suggests accessibility and equity concerns.</li>
+            <li>Automated outputs (ArcPy) generate both maps and ward-level tables for planners to identify priority wards for service expansion.</li>
+        </ul>
+    </section>
+
+    <!-- INTERPRETATION & IMPLICATIONS -->
+    <section class="section">
+        <h2>Interpretation & Policy Implications</h2>
+        <p>
+            The analysis suggests a layered geography: metropolitan cores have both high elderly counts and good facility coverage, while peripheral
+            wards—including island or mountain areas—face accessibility problems. Areas like Ōshima demonstrate that physical infrastructure alone
+            does not guarantee LTC provision. These gaps imply a need for targeted policy interventions (mobile services, transport subsidies, or facility investment)
+            and for planners to incorporate elderly density, facility capacity, and travel-time/network measures into allocation decisions.
+        </p>
+    </section>
+
+    <!-- LIMITATIONS & FUTURE WORK -->
+    <section class="section">
+        <h2>Limitations & Future Research</h2>
+        <ul>
+            <li>Current facility data are point locations without capacity (beds/staff) — capacity-weighted analyses would refine accessibility estimates.</li>
+            <li>Population snapshots (2020) do not capture seasonal or commuter populations. Travel-time/network-based accessibility (transit times) should be added.</li>
+            <li>Future work: integrate facility capacity, socioeconomic vulnerability, transport networks, and projections to create a composite LTC accessibility index.</li>
+        </ul>
+    </section>
+
+    <!-- DOWNLOADS / SCRIPTS -->
+    <section class="section">
+        <h2>Reproducibility</h2>
+        <p>
+            All preprocessing and mapping were automated using ArcPy: projection, density computation, polygon→raster conversion, and map export.
+            If you want, I can provide the ArcPy scripts and the geoprocessing workflow as downloadable files for the project page.
+        </p>
+    </section>
+
+    <!-- REFERENCES (short form) -->
+    <section class="section">
+        <h2>References (selected)</h2>
+        <ul>
+            <li>Ministry of Health, Labour and Welfare (Japan), 2022</li>
+            <li>Statistics Bureau, Government of Japan, 2023</li>
+            <li>Comas-Herrera et al., 2023</li>
+            <li>WHO / Kobe Centre, 2020</li>
+        </ul>
+    </section>
+</main>
+
+<footer>
+    <p>© 2025 Khoi Nguyen – GIS Portfolio</p>
+</footer>
+
+</body>
+</html>

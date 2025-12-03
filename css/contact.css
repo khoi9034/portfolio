@@ -1,0 +1,313 @@
+/* =============================== */
+/*         GLOBAL RESET            */
+/* =============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Arial', sans-serif;
+    /* 🌟 THEME: Default text color is light gray/white */
+    color: #EAEAEA;
+}
+
+/* 📌 STICKY FOOTER FIX */
+html, body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stacks children (header, main, footer) vertically */
+}
+
+body {
+    /* 🌟 THEME: Deep Black Background for Terminal Aesthetic */
+    background: #111111;
+    color: #EAEAEA;
+    line-height: 1.6;
+    overflow-y: scroll; 
+}
+
+/* =============================== */
+/*          NAVIGATION             */
+/* =============================== */
+
+header {
+    width: 100%;
+    /* 🌟 THEME: Darker Header Background */
+    background: #1B1B1B;
+    /* 🌟 THEME: Neon Cyan Border */
+    border-bottom: 1px solid #00BFA6;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 1px;
+    /* 🌟 THEME: Light text color */
+    color: #EAEAEA;
+    transition: 0.25s ease;
+}
+
+.nav-links li a:hover {
+    /* 🌟 THEME: Primary Accent Color: Cyan/Green */
+    color: #00FFC3;
+}
+
+#headerLine {
+    width: 100%;
+    height: 1px;
+    /* 🌟 THEME: Darker line */
+    background: #333333;
+    margin-bottom: 40px;
+}
+
+
+/* =============================== */
+/*         MAIN CONTENT            */
+/* =============================== */
+
+main {
+    width: min(1200px, 92%);
+    margin: auto;
+    /* 📌 STICKY FOOTER FIX: Makes main content take up remaining vertical space */
+    flex-grow: 1; 
+    padding-bottom: 60px;
+}
+
+h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+    /* 🌟 THEME: Accent color for main title */
+    color: #00FFC3; 
+    text-shadow: 0 0 5px rgba(0, 255, 195, 0.4);
+}
+
+h2 {
+    font-size: 26px;
+    margin: 40px 0 20px;
+    /* 🌟 THEME: Secondary accent color */
+    color: #00BFA6;
+    border-bottom: 2px solid #333333;
+    padding-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 18px;
+    /* 🌟 THEME: Secondary text color */
+    color: #AAAAAA; 
+    margin-bottom: 30px;
+}
+
+/* =============================== */
+/*           ABSTRACT              */
+/* =============================== */
+
+.abstract {
+    /* 🌟 THEME: Dark background for section container */
+    background: #1B1B1B;
+    padding: 25px 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    border: 1px solid #333333;
+}
+
+.abstract p {
+    color: #CCCCCC;
+}
+
+/* =============================== */
+/*            SECTIONS             */
+/* =============================== */
+
+.section {
+    margin-top: 40px;
+    /* 🌟 THEME: Dark background for section container */
+    background: #1B1B1B;
+    padding: 25px 30px;
+    border-radius: 8px;
+    border: 1px solid #333333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.section p, .section ul li {
+    color: #CCCCCC;
+}
+
+.section ul {
+    margin-left: 20px;
+}
+
+.section ul li {
+    margin-bottom: 10px;
+}
+
+/* =============================== */
+/*             FIGURES             */
+/* =============================== */
+
+.figures {
+    display: grid;
+    /* This will be overwritten by the media query on desktop/tablet */
+    grid-template-columns: 1fr;
+    gap: 50px;
+    margin-top: 50px;
+}
+
+figure {
+    /* 🌟 THEME: Dark background for figure container */
+    background: #1B1B1B;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #333333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+figure img {
+    width: 100%;
+    border-radius: 6px;
+    /* 🌟 THEME: Darker image border */
+    border: 1px solid #333333;
+}
+
+figcaption {
+    margin-top: 12px;
+    font-size: 15px;
+    /* 🌟 THEME: Secondary text color */
+    color: #AAAAAA; 
+    line-height: 1.5;
+}
+
+/* =============================== */
+/*            FOOTER               */
+/* =============================== */
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 1.5rem 0;
+    
+    /* 🌟 THEME: Darker footer background and border */
+    background-color: #1B1B1B;
+    color: #AAAAAA;
+    border-top: 1px solid #333333;
+    /* 📌 STICKY FOOTER FIX: Push footer down */
+    margin-top: auto; 
+}
+
+footer p {
+    color: #AAAAAA;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+/* =============================== */
+/*         RESPONSIVE              */
+/* =============================== */
+
+/* Desktop/Tablet view: Applies the 2-column figure layout */
+@media (min-width: 768px) {
+    .figures {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 📱 MOBILE RESPONSIVE LAYOUT FIX */
+@media screen and (max-width: 780px) {
+
+    body {
+        overflow-y: auto !important;
+        height: auto;
+    }
+
+    /* * HEADER & NAVIGATION FIX: Ensures horizontal links and alignment */
+    header {
+        padding: 1.2rem 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    nav {
+        width: 100%;
+        margin-top: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    ul.nav-links {
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: nowrap; /* Prevents header from shifting/wrapping */
+    }
+
+    /* MAIN CONTENT AND PROJECT CARDS */
+    main {
+        width: 90%; 
+        padding-bottom: 2rem;
+    }
+
+    h1 {
+        font-size: 8vw;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+    
+    .subtitle {
+        font-size: 4vw;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 22px;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    /* Section styling */
+    .abstract, .section {
+        margin-top: 20px;
+        padding: 15px 20px;
+    }
+
+    /* Text size adjustments */
+    .abstract p, .section p, .section ul li, figcaption {
+        font-size: 4vw; 
+    }
+    .abstract p, .section p {
+        color: #CCCCCC;
+    }
+    .section ul li {
+        color: #CCCCCC;
+    }
+    figcaption {
+        color: #AAAAAA;
+    }
+
+
+    /* FIGURES (Maps) - Force single column on mobile (inherited from base .figures) */
+    .figures {
+        gap: 30px;
+        margin-top: 30px;
+    }
+    
+    /* Navigation link size */
+    ul.nav-links a {
+        font-size: 3vw;
+    }
+    
+    /* Footer */
+    footer {
+        padding: 1.2rem 0;
+        height: auto;
+    }
+}

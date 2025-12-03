@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Anime Store Hotspot & Clustering Analysis — Khoi Nguyen</title>
+    <link rel="stylesheet" href="./css/AnimeStore.css">
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+        </ul>
+    </nav>
+</header>
+
+
+
+<main>
+
+<!-- ========================== -->
+<!--         HEADER             -->
+<!-- ========================== -->
+
+<section class="project-header">
+    <h1>Anime Store Hotspot & Spatial Clustering in Tokyo</h1>
+    <p class="subtitle">
+        A GIS-based analysis of cultural retail clusters using LISA, Gi*, and Near Table methods — Khoi Nguyen, GEOG 392
+    </p>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            This study analyzes the spatial distribution of anime stores across Tokyo using Local Indicators of 
+            Spatial Association (LISA), Getis-Ord Gi* hotspot detection, and Near Table proximity analysis. 
+            Geocoded store locations collected via the Google Places API were integrated with population and zoning 
+            data to reveal statistically significant clusters and cultural retail hubs. Results highlight strong 
+            clustering in Akihabara, Ikebukuro, Shibuya, and Nakano Broadway, demonstrating how commercial zoning 
+            and transit accessibility shape anime retail geography. All processing and map exports were automated 
+            using ArcPy to ensure full reproducibility.
+        </p>
+    </div>
+</section>
+
+
+<!-- ========================== -->
+<!--       MAP PLACEHOLDERS     -->
+<!-- ========================== -->
+
+<section class="figures">
+
+    <!-- MAP 1: Points -->
+    <figure>
+        <img src="./images/AnimeStore/AnimeStorePoints.webp" alt="Anime Store Locations — Point Map">
+        <figcaption>
+            <strong>Figure 1.</strong> Point distribution of all anime stores collected from Google Places API.
+           
+        </figcaption>
+    </figure>
+
+    <!-- MAP 2: Gi* -->
+    <figure>
+        <img src="./images/AnimeStore/AnimeStoreHotSpot.webp" alt="Getis-Ord Gi* Hotspot Map">
+        <figcaption>
+            <strong>Figure 2.</strong> Getis-Ord Gi* hotspot analysis.
+            <br>Red areas represent statistically significant (p=0.01) anime store clusters.
+        </figcaption>
+    </figure>
+
+    <!-- MAP 3: LISA -->
+    <figure>
+        <img src="./images/AnimeStore/LisaPopulationDens.webp" alt="LISA Cluster Significance Map">
+        <figcaption>
+            <strong>Figure 3.</strong> LISA cluster analysis showing High–High, Low–Low, and outlier wards.
+        </figcaption>
+    </figure>
+
+    <!-- MAP 4: Near Table -->
+    <figure>
+        <img src="./images/AnimeStore/anime_near_table_map.webp" alt="Near Table Store Distance Map">
+        <figcaption>
+            <strong>Figure 4.</strong> Near Table–based store-to-store distances visualizing micro-scale clustering.
+        </figcaption>
+    </figure>
+
+</section>
+
+
+<!-- ========================== -->
+<!--         METHODS            -->
+<!-- ========================== -->
+
+<section class="section"> <h2>Technical Challenges & Solutions</h2>
+<p>
+    Building a fully automated ArcPy workflow for this spatial analysis project required solving a series of 
+    ESRI-specific quirks that do not appear in documentation. Throughout development, I encountered multiple 
+    failures caused by workspace type, projection mismatches, invalid output names, and feature class behavior. 
+    Below are the major issues I solved and how I solved them.
+</p>
+
+<h3>1. Understanding the Difference Between GPKG, GDB, Folders, and Feature Classes</h3>
+<p>
+    One of the biggest lessons came from realizing that a GeoPackage (GPKG) is a <strong>single file</strong>, 
+    not a folder. Several ArcPy tools—including <code>NearTableToLines</code> and 
+    <code>CreateRandomPoints</code>—require an output location that is a <strong>directory or file geodatabase</strong>.
+    I originally attempted to write outputs such as shapefiles directly into the GPKG path, which produced vague
+    failures and missing outputs. 
+</p>
+<p>
+    <strong>Solution:</strong> I reorganized all processing outputs into an ESRI File Geodatabase 
+    (<code>analysis.gdb</code>) and treated the GPKG strictly as a final export container. This resolved the 
+    failures caused by treating a GPKG like a filesystem directory.
+</p>
+
+<h3>2. Fixing NearTableToLines Failures</h3>
+<p>
+    The <code>NearTableToLines</code> conversion repeatedly failed because its <code>out_path</code> parameter 
+    must point to a <strong>real folder</strong>, not a GeoPackage. ArcPy does not allow line outputs to be 
+    written into a GPKG even though it allows feature class layers to be stored there.
+</p>
+<p>
+    <strong>Solution:</strong> I routed all NearTableToLines outputs into <code>analysis.gdb</code> 
+    and only exported final results to GPKG afterward. This ensured all OBJECTID fields remained valid and 
+    prevented “tool failed unexpectedly” errors.
+</p>
+
+<h3>3. Debugging ERROR 999999 in CreateRandomPoints</h3>
+<p>
+    The random point generation failed with the generic “ERROR 999999” due to an ArcPy naming rule that does 
+    not appear in documentation. I had passed a full file path (e.g., <code>C:/output/RandomPoints.shp</code>) 
+    as the <code>out_name</code>, but ArcPy requires <code>out_name</code> to be only the simple name 
+    (e.g., <code>RandomPoints</code>) when <code>out_path</code> already specifies the folder.
+</p>
+<p>
+    <strong>Solution:</strong> I rewrote <code>generate_random_points()</code> so that 
+    <code>out_path</code> receives the folder and <code>out_name</code> receives a simple feature class name. 
+    This resolved the hidden failure in CreateRandomPoints.
+</p>
+
+<h3>4. Fixing Projection Mismatches That Broke Near Connections</h3>
+<p>
+    At one point, Near Table results contained lines leaving the map entirely. The cause was that random points 
+    were generated in WGS84 while the target features were in a projected coordinate system. The Near tool uses 
+    raw coordinate values, so mismatched projections result in invalid output geometry.
+</p>
+<p>
+    <strong>Solution:</strong> I updated the random point generation procedure to automatically project the 
+    points into the same coordinate system as the analysis layers, ensuring correct distance calculations.
+</p>
+
+<h3>5. Preserving OBJECTID Integrity Across File Types</h3>
+<p>
+    NearTableToLines depends on ESRI-style <code>OBJECTID</code> fields. Exporting the points directly to GPKG 
+    caused ArcGIS to rewrite the OBJECTID field into a different internal format, breaking the Near conversion.
+</p>
+<p>
+    <strong>Solution:</strong> I ensured all intermediate layers remained inside the GDB. Only final 
+    products were exported to GPKG. This preserved OBJECTID integrity and allowed the entire proximity 
+    analysis pipeline to operate correctly.
+</p>
+
+<h3>6. Improving Workflow Maintainability Through Function Refactoring</h3>
+<p>
+    Early development merged all logic into one script block, making debugging difficult. Through repeated 
+    troubleshooting—especially around path issues, gpkg behavior, and ArcPy tool failures—I refactored the 
+    workflow into modular functions such as:
+</p>
+<ul>
+    <li><code>generate_random_points()</code></li>
+    <li><code>export_to_gpkg()</code></li>
+    <li><code>population_centroids()</code></li>
+    <li><code>generate_near_table()</code></li>
+    <li><code>near_table_to_lines()</code></li>
+</ul>
+<p>
+    This restructuring made the pipeline fully reusable, easier to debug, and robust to future data additions.
+</p>
+
+<h3>7. Diagnosing Path Confusion and Workspace Behavior</h3>
+<p>
+    Multiple failures occurred because I unintentionally passed GPKG paths where ArcPy expected either a feature 
+    class or a folder. By printing all resolved paths and validating them with <code>arcpy.Exists()</code> before 
+    each operation, I eliminated silent errors and ensured consistent workspace handling.
+</p>
+
+</section>
+
+
+<!-- ========================== -->
+<!--          RESULTS           -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Results</h2>
+    <ul>
+        <li>Gi* reveals **99% confidence hotspots** in Akihabara and Ikebukuro.</li>
+        <li>LISA identifies High–High clusters in **Akihabara, Shibuya, Nakano Broadway, Ikebukuro**.</li>
+        <li>Near Table results show extremely short inter-store distances (< 40 m) in Akihabara.</li>
+        <li>Low–Low wards appear in suburban districts with little or no anime commercial presence.</li>
+        <li>ArcPy ensured fully reproducible outputs and consistent map layouts.</li>
+    </ul>
+</section>
+
+
+<!-- ========================== -->
+<!--     INTERPRETATION         -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Interpretation & Implications</h2>
+    <p>
+        The results indicate that anime store clustering is strongly shaped by cultural identity, transit access, 
+        and established commercial zoning. Akihabara continues to dominate as Tokyo’s central anime district, 
+        while Ikebukuro and Shibuya show expanding influence. LISA and Gi* confirm that these patterns are 
+        not random, and Near Table exposes micro-scale retail density—with stores often located mere meters apart. 
+        These insights support store planning, tourism strategy, and cultural district development.
+    </p>
+</section>
+
+
+<!-- ========================== -->
+<!--      LIMITATIONS           -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Limitations & Future Work</h2>
+    <ul>
+        <li>Google Places underrepresents small independent shops.</li>
+        <li>Point-based analysis lacks store foot traffic weighting.</li>
+        <li>Ward-level LISA is coarse; block-level LISA would add more detail.</li>
+        <li>Future: network-based distance clustering, temporal store activity patterns.</li>
+    </ul>
+</section>
+
+
+<!-- ========================== -->
+<!--      REPRODUCIBILITY       -->
+<!-- ========================== -->
+
+<section class="section">
+    <h2>Reproducibility</h2>
+    <p>
+        All API retrieval, cleaning, geocoding, spatial statistics, and map exports were fully automated through 
+        custom ArcPy scripts. Scripts can be shared upon request.
+    </p>
+</section>
+
+
+
+</main>
+
+<footer>
+    <p>© 2025 Khoi Nguyen – GIS Portfolio</p>
+</footer>
+
+</body>
+</html>

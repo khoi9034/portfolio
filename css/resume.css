@@ -1,0 +1,253 @@
+/* =============================== */
+/*         GLOBAL RESET            */
+/* =============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Arial', sans-serif;
+    /* 🌟 THEME: Default text color is light gray/white */
+    color: #EAEAEA;
+}
+
+/* 📌 STICKY FOOTER FIX */
+html, body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stacks children (header, main, footer) vertically */
+}
+
+body {
+    /* 🌟 THEME: Deep Black Background for Terminal Aesthetic */
+    background: #111111;
+    color: #EAEAEA;
+    line-height: 1.6;
+    overflow-y: scroll; 
+}
+
+/* =============================== */
+/*          NAVIGATION             */
+/* =============================== */
+
+header {
+    width: 100%;
+    /* 🌟 THEME: Darker Header Background */
+    background: #1B1B1B;
+    /* 🌟 THEME: Neon Cyan Border */
+    border-bottom: 1px solid #00BFA6;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 1px;
+    /* 🌟 THEME: Light text color */
+    color: #EAEAEA;
+    transition: 0.25s ease;
+}
+
+.nav-links li a:hover,
+.nav-links li a.colorresume { 
+    /* 🌟 THEME: Primary Accent Color: Cyan/Green */
+    color: #00FFC3; 
+}
+
+#headerLine {
+    width: 100%;
+    height: 1px;
+    /* 🌟 THEME: Darker line */
+    background: #333333;
+    margin-bottom: 40px;
+}
+
+/* =============================== */
+/*         MAIN CONTENT            */
+/* =============================== */
+
+main {
+    width: min(1200px, 92%);
+    margin: auto;
+    /* 📌 STICKY FOOTER FIX: Makes main content take up remaining vertical space */
+    flex-grow: 1; 
+    padding-bottom: 60px;
+}
+
+h1 {
+    font-size: 38px;
+    margin-bottom: 20px;
+    /* 🌟 THEME: Accent color for main title */
+    color: #00FFC3;
+    text-shadow: 0 0 5px rgba(0, 255, 195, 0.4);
+}
+
+h2 {
+    font-size: 26px;
+    margin: 40px 0 20px;
+    /* 🌟 THEME: Secondary accent color */
+    color: #00BFA6;
+    border-bottom: 2px solid #333333;
+    padding-bottom: 5px;
+}
+
+/* RESUME SPECIFIC STYLES */
+.contact-info {
+    font-size: 16px;
+    margin-bottom: 10px;
+    /* 🌟 THEME: Secondary text color */
+    color: #AAAAAA; 
+}
+
+/* Standard Section */
+.section {
+    margin-top: 40px;
+    /* 🌟 THEME: Dark background for section container */
+    background: #1B1B1B;
+    padding: 25px 30px;
+    border-radius: 8px;
+    border: 1px solid #333333;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+.section ul {
+    margin-left: 20px;
+}
+
+.section ul li {
+    margin-bottom: 10px;
+    color: #CCCCCC; /* Light gray for main list items */
+}
+.section ul ul { /* Nested lists (detail points) */
+    margin-top: 5px;
+    margin-left: 30px; 
+    list-style-type: circle;
+}
+.section ul ul li {
+    margin-bottom: 5px;
+    font-size: 15px;
+    color: #AAAAAA; /* Even lighter gray for sub-points */
+}
+
+
+/* =============================== */
+/*            FOOTER               */
+/* =============================== */
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 1.5rem 0;
+    
+    /* 🌟 THEME: Darker footer background and border */
+    background-color: #1B1B1B;
+    color: #AAAAAA;
+    border-top: 1px solid #333333;
+    /* 📌 STICKY FOOTER FIX: Push footer down */
+    margin-top: auto; 
+}
+
+footer p {
+    color: #AAAAAA;
+    font-size: 14px;
+    margin-top: 0;
+}
+
+
+/* =============================== */
+/* 📱 MOBILE RESPONSIVE LAYOUT FIX */
+/* =============================== */
+@media screen and (max-width: 780px) {
+
+    body {
+        overflow-y: auto !important;
+        height: auto;
+    }
+
+    /* HEADER & NAVIGATION FIX: Ensures horizontal links and alignment */
+    header {
+        padding: 1.2rem 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    nav {
+        width: 100%;
+        margin-top: 0;
+        display: flex;
+        justify-content: center;
+    }
+
+    ul.nav-links {
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: nowrap; /* Prevents header from shifting/wrapping */
+    }
+    
+    /* MAIN CONTENT ADJUSTMENTS */
+    main {
+        width: 90%; 
+        padding-bottom: 2rem;
+    }
+
+    h1 {
+        font-size: 7vw; /* Adjusted for better mobile scaling */
+        margin-top: 1rem;
+    }
+    
+    h2 {
+        font-size: 22px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+    }
+    
+    /* Resume specific text adjustments */
+    .contact-info, main > section > p {
+        font-size: 3.5vw; 
+    }
+    .contact-info {
+        color: #AAAAAA;
+    }
+
+    /* Section styling */
+    .section {
+        margin-top: 20px;
+        padding: 15px 20px;
+    }
+    
+    /* List item adjustments for readability */
+    .section ul li {
+        font-size: 4vw; 
+        line-height: 1.3;
+        color: #CCCCCC;
+    }
+    .section ul ul li {
+        font-size: 3.5vw; 
+        line-height: 1.3;
+        color: #AAAAAA;
+    }
+    
+    .section ul ul {
+        margin-left: 20px;
+    }
+    
+    /* Navigation link size */
+    ul.nav-links a {
+        font-size: 2.5vw;
+    }
+
+    footer {
+        padding: 1.2rem 0;
+        height: auto;
+    }
+}
