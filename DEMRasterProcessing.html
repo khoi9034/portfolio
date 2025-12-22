@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>DEM Raster Processing: Wake County, NC — Khoi Nguyen</title>
+    <link rel="stylesheet" href="./css/dem_processing.css"> 
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<section class="project-header">
+    <h1>Digital Elevation Model (DEM) Processing: Wake County, NC</h1>
+    <p class="subtitle">
+        Solving the "Projection Paradox": An automated ArcPy workflow for seamless multi-tile raster assembly — Khoi Nguyen
+    </p>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            This project documents the automated preparation of high-quality Digital Elevation Model (DEM) data for Wake County, NC. While standard workflows often overlook the nuances of coordinate system transformations, this study highlights a critical "Two-Step" methodology: <strong>Mosaicking before Projecting</strong>. Utilizing ArcPy, six individual SRTM tiles were merged into a seamless sheet and subsequently transformed from angular degrees into linear meters. This approach resolved the "Unit Confusion" error common in large-scale raster processing, resulting in a precision-clipped, analysis-ready $30 \text{ meter}$ product.
+        </p>
+    </div>
+</section>
+
+<section class="figures">
+    <figure>
+        <img src="./images/MosaicDEM/tilespng.webp" alt="Six separate SRTM tiles before processing">
+        <figcaption>
+            <strong>Figure 1. The Raw Data:</strong> Six individual $1\times1$ degree SRTM tiles ($N35W078$ through $N36W080$) in their native Geographic Coordinate System (WGS 1984).
+        </figcaption>
+    </figure>
+
+    <figure>
+        <img src="./images/MosaicDEM/mosaic.webp" alt="Seamless Mosaic before clipping">
+        <figcaption>
+            <strong>Figure 2. The Mosaic "Glue":</strong> A seamless mosaic created using the ArcPy <code>#</code> parameter to preserve native degree units and prevent "seams" or gaps between tiles.
+        </figcaption>
+    </figure>
+
+    <figure>
+        <img src="./images/MosaicDEM/WakeClipped.webp" alt="Final Projected and Clipped DEM">
+        <figcaption>
+            <strong>Figure 3. The Final Output:</strong> The seamless mosaic was projected to <strong>NAD 1983 StatePlane NC (Meters)</strong> and clipped to the Wake County boundary.
+        </figcaption>
+    </figure>
+</section>
+
+<section class="section"> 
+    <h2>Technical Deep Dive: Overcoming the "Projection Paradox"</h2>
+    
+    <h3>1. The "Tape vs. Stretch" Analogy</h3>
+    <p>
+        In professional GIS, <strong>Mosaicking is like taping pieces of paper together</strong>, while <strong>Projecting is like stretching that paper over a bowl</strong>. If one attempts to project tiles individually before mosaicking, each tile warps slightly differently based on its own center point, causing visible gaps or "seams." My workflow ensures the "glue" (Mosaic) happens while the data is flat (Degrees) before the "stretch" (Project) occurs.
+    </p>
+
+    <h3>2. Solving the "Unit Confusion" (-78 Meter Problem)</h3>
+    <p>
+        A common pitfall in <code>MosaicToNewRaster</code> is forcing a Projected Coordinate System (Meters) onto Degree-based data. Raw tiles use values like $-78.5$ degrees. If forced into a Meter-based system during the mosaic, the data appears "off the map," placed exactly $-78$ meters from the origin. I utilized <code>coordinate_system_for_the_raster="#"</code> to preserve raw coordinates for the subsequent <code>ProjectRaster</code> tool.
+    </p>
+
+    <h3>3. Precision Clipping: The "Cookie Cutter" Logic</h3>
+    <p>
+        When clipping the final raster to Wake County, two critical ArcPy parameters were used to ensure the result was not a simple square:
+    </p>
+    <ul>
+        <li><strong><code>clipping_geometry="ClippingGeometry"</code>:</strong> Without this, ArcGIS creates a rectangular box based on the county's furthest corners. Enabling this ensures the raster is cut exactly to the irregular zig-zag boundary of the county.</li>
+        <li><strong><code>maintain_clipping_extent="NO_MAINTAIN_EXTENT"</code>:</strong> This is the "Data Integrity" choice. 
+            <ul>
+                <li><em>Why I chose this:</em> <strong>Maintain Extent</strong> stretches and resamples pixels to perfectly hit coordinate lines, which can alter elevation values.</li>
+                <li><strong>No Maintain Extent</strong> (My choice) keeps the original 30m pixel grid exactly where it is and simply drops pixels that fall outside the line. This preserves the raw integrity of the USGS elevation data.</li>
+            </ul>
+        </li>
+    </ul>
+    
+</section>
+
+<section class="section">
+    <h2>Results & Implications</h2>
+    <ul>
+        <li><strong>Data Integrity:</strong> By mosaicking in the native GCS and choosing "No Maintain Extent," I maintained original elevation values without unwanted resampling.</li>
+        <li><strong>Geometric Accuracy:</strong> The final product is correctly located in <strong>NAD 1983 StatePlane NC (WKID 3359)</strong>, allowing for accurate slope and distance calculations.</li>
+        <li><strong>Portfolio Optimization:</strong> The final map was exported at $2560 \text{ pixels}$ and optimized into **WebP** format for high-performance web display.</li>
+    </ul>
+</section>
+
+<section class="section">
+    <h2>Reproducibility</h2>
+    <p>
+        The entire preparation—from tile discovery via <code>os.listdir</code> to the final shape-based clip—is fully automated. This script-based approach allows for the immediate generation of a DEM for any county in North Carolina by simply swapping the input tiles and the boundary polygon.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2025 Khoi Nguyen – GIS Portfolio</p>
+</footer>
+
+</body>
+</html>
