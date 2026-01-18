@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Socio-Economic Analytics: Diversity Index — Khoi Nguyen</title>
+    <link rel="stylesheet" href="./css/DiversityMap.css"> 
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<section class="project-header">
+    <h1>Automating Simpson’s Diversity Index: Orange County, NC (2000–2010)</h1>
+    <p class="subtitle">
+        Bridging Census Data Gaps: An ArcPy framework for longitudinal demographic modeling — Khoi Nguyen
+    </p>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            This project quantifies neighborhood-level demographic shifts in Orange County, NC, by calculating <strong>Simpson’s Diversity Index</strong> across two decades. While census data formats often shift between decennial surveys, this study utilizes a Python-driven "Field Mapping" architecture to standardize disparate schemas. By automating spatial selections via FIPS codes and executing high-speed row-wise calculations via <code>arcpy.da.UpdateCursor</code>, this workflow transforms raw population counts into a normalized $0.0$ to $1.0$ diversity score.
+        </p>
+    </div>
+</section>
+
+<section class="figures">
+    <figure>
+        <img src="./images/DiversityMap/Layout2000extracred.webp" alt="Diversity Index Map of Orange County in 2000">
+        <figcaption>
+            <strong>Figure 1. The 2000 Baseline:</strong> Initial diversity scores calculated using a 5-category race model. Darker hues represent tracts with higher demographic integration.
+        </figcaption>
+    </figure>
+
+    <figure>
+        <img src="./images/DiversityMap/Layout2010extracred.webp" alt="Diversity Index Map of Orange County in 2010">
+        <figcaption>
+            <strong>Figure 2. The 2010 Evolution:</strong> Calculated using an expanded 6-category race model (including <em>HAWN_PI</em>). The map reveals a northward migration of demographic diversity over ten years.
+        </figcaption>
+    </figure>
+
+    <figure>
+        <img src="./images/DiversityMap/code.webp" alt="Snippet of the ArcPy UpdateCursor math">
+        <figcaption>
+            <strong>Figure 3. The Math Engine:</strong> A code block demonstrating the <code>UpdateCursor</code> logic used to square the proportions of each demographic group.
+        </figcaption>
+    </figure>
+</section>
+
+<section class="section"> 
+    <h2>Technical Deep Dive: Scripting for Data Resilience</h2>
+    
+    <h3>1. The "Decoder Ring" (Dynamic Field Mapping)</h3>
+    <p>
+        Census data is notoriously inconsistent; what was <code>ASIAN_PI</code> in 2000 became <code>ASIAN</code> and <code>HAWN_PI</code> in 2010. To prevent script failure, I implemented a <strong>Field Map Dictionary</strong>. This acts as a "Decoder Ring," mapping human-readable nicknames (keys) to messy census column names (values). This ensures the core math engine remains unchanged even when the input data evolves.
+    </p>
+
+    <h3>2. Dictionary Unpacking & Validation</h3>
+    <p>
+        To ensure data integrity, I developed a validation loop using the <code>.items()</code> method. This allowed the script to "unpack" the dictionary—holding the nickname in one hand and the real column name in the other.
+    </p>
+    <blockquote>
+        <em>"By looping through both keys and values simultaneously, the script provides human-centric error messages, identifying exactly which demographic category failed the validation check."</em>
+    </blockquote>
+
+    <h3>3. The Diversity Formula</h3>
+    <p>
+        The diversity score is calculated using the Simpson's Index formula:
+        $$DI = 1 - (\sum (\frac{Race_{count}}{Pop})^2 \times ((\frac{Hisp}{Pop})^2 + (\frac{NonHisp}{Pop})^2))$$
+        The script automatically handles "Null-Population" tracts by assigning a $0$ score, preventing division-by-zero errors that commonly crash standard GIS tools.
+    </p>
+
+    <h3>4. Automated Spatial Subsetting</h3>
+    <p>
+        Instead of manually clipping layers, I utilized <code>SelectLayerByAttribute</code> with <strong>FIPS Code 135</strong> (Orange County). This ensures that only the relevant tracts are processed, significantly reducing computation time and storage footprint in the File Geodatabase.
+    </p>
+    
+</section>
+
+<section class="section">
+    <h2>Results & Implications</h2>
+    <ul>
+        <li><strong>Automated GDB Management:</strong> The script detects and builds the required File Geodatabase structure if it is missing, ensuring a "One-Click" execution.</li>
+        <li><strong>Longitudinal Comparability:</strong> By normalizing results to a $0-1$ scale, the project allows for direct comparison of demographic "heat" between different census years.</li>
+        <li><strong>Outlier Management:</strong> Included a cleanup pass to reset tracts with a $1.0$ index (mathematical outliers) to $0$, improving the visual clarity of the final cartographic product.</li>
+    </ul>
+</section>
+
+<section class="section">
+    <h2>Reproducibility</h2>
+    <p>
+        The Python source code is designed with modularity in mind. By simply updating the FIPS code in the <code>where_clause</code>, this tool can be instantly redeployed to analyze any of the 100 counties in North Carolina, demonstrating a scalable approach to urban and regional planning.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2025 Khoi Nguyen – GIS Portfolio</p>
+</footer>
+
+</body>
+</html>
