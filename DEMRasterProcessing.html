@@ -38,7 +38,7 @@
     <figure>
         <img src="./images/MosaicDEM/tilespng.webp" alt="Six separate SRTM tiles before processing">
         <figcaption>
-            <strong>Figure 1. The Raw Data:</strong> Six individual $1\times1$ degree SRTM tiles ($N35W078$ through $N36W080$) in their native Geographic Coordinate System (WGS 1984).
+            <strong>Figure 1. The Raw Data:</strong> Six individual 1×1 degree SRTM tiles (N35W078 through N36W080) in their native Geographic Coordinate System (WGS 1984).
         </figcaption>
     </figure>
 
@@ -67,7 +67,7 @@
 
     <h3>2. Solving the "Unit Confusion" (-78 Meter Problem)</h3>
     <p>
-        A common pitfall in <code>MosaicToNewRaster</code> is forcing a Projected Coordinate System (Meters) onto Degree-based data. Raw tiles use values like $-78.5$ degrees. If forced into a Meter-based system during the mosaic, the data appears "off the map," placed exactly $-78$ meters from the origin. I utilized <code>coordinate_system_for_the_raster="#"</code> to preserve raw coordinates for the subsequent <code>ProjectRaster</code> tool.
+        A common pitfall in <code>MosaicToNewRaster</code> is forcing a Projected Coordinate System (Meters) onto Degree-based data. Raw tiles use values like −78.5 degrees. If forced into a Meter-based system during the mosaic, the data appears "off the map," placed exactly −78 meters from the origin. I utilized <code>coordinate_system_for_the_raster="#"</code> to preserve raw coordinates for the subsequent <code>ProjectRaster</code> tool.
     </p>
 
     <h3>3. Precision Clipping: The "Cookie Cutter" Logic</h3>
@@ -91,7 +91,7 @@
     <ul>
         <li><strong>Data Integrity:</strong> By mosaicking in the native GCS and choosing "No Maintain Extent," I maintained original elevation values without unwanted resampling.</li>
         <li><strong>Geometric Accuracy:</strong> The final product is correctly located in <strong>NAD 1983 StatePlane NC (WKID 3359)</strong>, allowing for accurate slope and distance calculations.</li>
-        <li><strong>Portfolio Optimization:</strong> The final map was exported at $2560 \text{ pixels}$ and optimized into **WebP** format for high-performance web display.</li>
+        <li><strong>Portfolio Optimization:</strong> The final map was exported at 2560 pixels and optimized into <strong>WebP</strong> format for high-performance web display.</li>
     </ul>
 </section>
 
