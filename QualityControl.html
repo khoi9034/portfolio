@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Automated Incident Audit: ArcPy & Python — Khoi Nguyen</title>
+    <link rel="stylesheet" href="./css/QualityControl.css"> 
+</head>
+
+<body>
+
+<header>
+    <nav>
+        <ul class="nav-links">
+            <li><a href="index.html">HOME</a></li>
+            <li><a href="projects.html">PROJECTS</a></li>
+            <li><a href="resume.html">RESUME</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+
+<section class="project-header">
+    <h1>Automated Incident Auditing System</h1>
+    <p class="subtitle">
+        Building a "Validation Gatekeeper": Robust Geodatabase Auditing with ArcPy Data Access Cursors — Khoi Nguyen
+    </p>
+
+    <div class="abstract">
+        <h2>Abstract</h2>
+        <p>
+            This project showcases a Python-driven automation framework designed to audit and validate police incident data within an ESRI File Geodatabase. By leveraging <code>arcpy.da</code> cursors and custom logging handlers, the script performs pre-flight validation of spatial references, creates timestamped backups, and generates detailed attribute reports. This workflow eliminates manual data inspection risks and ensures downstream analysis is performed on "clean," projected datasets.
+        </p>
+    </div>
+</section>
+
+<section class="figures">
+    <figure>
+        <img src="./images/QualityControl/figure1.webp" alt="Terminal output showing row auditing">
+        <figcaption>
+            <strong>Figure 1. The Audit in Action:</strong> The script dynamically lists available feature classes and uses a SearchCursor to inspect attribute integrity in real-time.
+        </figcaption>
+    </figure>
+
+    <figure>
+        <img src="./images/QualityControl/figure2.webp" alt="Log file showing success and error messages">
+        <figcaption>
+            <strong>Figure 2. Fail-Safe Logging:</strong> Implementation of <code>logging.basicConfig</code> ensures that every success, warning, and critical failure is recorded with a unique timestamp.
+        </figcaption>
+    </figure>
+</section>
+
+<section class="section"> 
+    <h2>Technical Deep Dive: The Developer's Toolkit</h2>
+    
+    <h3>1. Handling the "Result Object"</h3>
+    <p>
+        One of the most common pitfalls for ArcPy beginners is treating geoprocessing results as simple strings. My implementation accounts for the <strong>Result Object</strong>. When calling tools like <code>GetCount</code> or <code>Buffer</code>, I access index <code>[0]</code> to retrieve the primary output while ignoring tool status or system messages, ensuring the script processes the actual data path rather than a status report.
+    </p>
+
+    <h3>2. The "Validation Gatekeeper" Logic</h3>
+    <p>
+        To prevent script crashes during complex spatial operations, I implemented a <strong>Validation Gatekeeper</strong>. Before any auditing occurs, the script inspects the <code>spatialReference</code> property. If the coordinate system is "Unknown," the script triggers a <code>logging.critical</code> event and halts execution. This prevents the "Projection Paradox" by ensuring no data is processed without a defined linear or angular unit.
+    </p>
+
+    <h3>3. Dynamic Data Inspection with SearchCursors</h3>
+    <p>
+        Instead of hard-coding field names, this script uses <strong>List Comprehension</strong> to grab all field names dynamically. It then utilizes a <code>SearchCursor</code> paired with Python’s <code>zip()</code> function to map field names to row values. This allows the auditor to work on <em>any</em> feature class regardless of its schema, making the tool highly reusable across different departments.
+    </p>
+    
+</section>
+
+<section class="section">
+    <h2>Script Features & Optimization</h2>
+    <ul>
+        <li><strong>Automated Backups:</strong> Uses <code>arcpy.management.Copy</code> to create a snapshot of the input GDB before any processing begins.</li>
+        <li><strong>User-Centric CLI:</strong> Features an indexed menu system allowing users to select specific layers for auditing without typing long file paths.</li>
+        <li><strong>Resource Cleanup:</strong> Employs <code>try/except/finally</code> blocks to ensure that even if a critical error occurs, the script logs the traceback and releases file locks.</li>
+    </ul>
+</section>
+
+<section class="section">
+    <h2>Reproducibility</h2>
+    <p>
+        The script is designed with a modular "Execution Hub" (main function). By simply updating the <code>projectRoot</code> variable, the entire auditing infrastructure—including log directories, backup folders, and output geodatabases—is automatically generated. This makes it a "plug-and-play" solution for GIS Data Managers.
+    </p>
+</section>
+
+</main>
+
+<footer>
+    <p>© 2026 Khoi Nguyen – GIS Portfolio</p>
+</footer>
+
+</body>
+</html>

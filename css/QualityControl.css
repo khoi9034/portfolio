@@ -1,0 +1,275 @@
+/* =============================== */
+/*         GLOBAL RESET            */
+/* =============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', 'Arial', sans-serif;
+    /* 🌟 THEME: Default text color is light gray/white */
+    color: #EAEAEA; 
+}
+
+/* 📌 STICKY FOOTER FIX */
+html, body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* Stacks children (header, main, footer) vertically */
+}
+
+body {
+    /* 🌟 THEME: Deep Black Background for Terminal Aesthetic */
+    background: #111111;
+    color: #EAEAEA;
+    line-height: 1.6;
+    overflow-y: scroll; 
+}
+
+/* =============================== */
+/*          NAVIGATION             */
+/* =============================== */
+
+header {
+    width: 100%;
+    /* 🌟 THEME: Darker Header Background */
+    background: #1B1B1B;
+    /* 🌟 THEME: Neon Cyan Border */
+    border-bottom: 1px solid #00BFA6;
+    padding: 20px 0;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-links li a {
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 1px;
+    /* 🌟 THEME: Light text color */
+    color: #EAEAEA;
+    transition: 0.25s ease;
+}
+
+.nav-links li a:hover {
+    /* 🌟 THEME: Primary Accent Color: Cyan/Green */
+    color: #00FFC3;
+}
+
+
+/* =============================== */
+/*         MAIN CONTENT            */
+/* =============================== */
+
+main {
+    width: min(1200px, 92%);
+    margin: auto;
+    /* 📌 STICKY FOOTER FIX: This makes the main content take up all available vertical space */
+    flex-grow: 1;
+    padding-bottom: 60px;
+}
+
+.project-header {
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+}
+
+h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+    color: #00FFC3; /* 🌟 THEME: Accent color for main title */
+    text-shadow: 0 0 5px rgba(0, 255, 195, 0.4);
+}
+
+.subtitle {
+    font-size: 18px;
+    /* 🌟 THEME: Secondary text color */
+    color: #AAAAAA; 
+    margin-bottom: 30px;
+}
+
+h2 {
+    font-size: 26px;
+    margin: 40px 0 20px;
+    color: #00BFA6; /* 🌟 THEME: Secondary accent color */
+    border-bottom: 2px solid #333333;
+    padding-bottom: 5px;
+}
+
+h3 {
+    font-size: 20px;
+    margin: 25px 0 10px;
+    color: #EAEAEA;
+}
+
+.abstract, .section {
+    /* 🌟 THEME: Text body styling */
+    color: #CCCCCC;
+}
+
+.abstract {
+    padding: 20px;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background-color: #1B1B1B;
+}
+
+.abstract h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: none;
+    color: #EAEAEA;
+}
+
+.section p, .section li {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #CCCCCC;
+}
+
+.section ul {
+    margin-left: 20px;
+}
+
+
+/* =============================== */
+/*           FIGURE GALLERY        */
+/* =============================== */
+
+.figures {
+    /* 🔑 FIX: Use CSS Grid for 2x2 layout on desktop */
+    display: grid;
+    /* Two columns, each taking an equal fraction (1fr) of the available space */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 2.5rem; /* Gap between grid items */
+    margin: 3rem 0;
+}
+
+figure {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* 🔑 FIX: Removed fixed width - Grid handles sizing now */
+    width: 100%; 
+    padding: 10px;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    background-color: #1B1B1B;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+figure img {
+    /* Ensure image is contained by the figure and respects its aspect ratio */
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 2px;
+    margin-bottom: 10px;
+}
+
+figcaption {
+    text-align: center;
+    font-size: 14px;
+    color: #AAAAAA;
+}
+
+figcaption strong {
+    color: #EAEAEA;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* =============================== */
+/*            FOOTER               */
+/* =============================== */
+
+footer {
+    width: 100%;
+    text-align: center;
+    padding: 1.5rem 0;
+    
+    /* 🌟 THEME: Darker footer background and border */
+    background-color: #1B1B1B;
+    color: #AAAAAA;
+    border-top: 1px solid #333333;
+}
+
+footer p {
+    color: #AAAAAA;
+    font-size: 14px;
+}
+
+/* =============================== */
+/* 📱 MOBILE RESPONSIVE LAYOUT FIX */
+/* =============================== */
+@media screen and (max-width: 780px) {
+
+    /* HEADER & NAVIGATION FIX: Ensures horizontal links and alignment */
+    header {
+        padding: 1.2rem 0;
+        justify-content: center;
+        align-items: center;
+    }
+
+    ul.nav-links {
+        gap: 1rem;
+        flex-wrap: nowrap; 
+    }
+    
+    ul.nav-links a {
+        font-size: 3vw;
+    }
+    
+    /* MAIN CONTENT */
+    main {
+        width: 90%; 
+        padding-bottom: 2rem;
+    }
+
+    /* TEXT */
+    h1 {
+        font-size: 30px;
+        text-align: center;
+    }
+    
+    .subtitle {
+        font-size: 15px;
+        text-align: center;
+    }
+    
+    .abstract h2, h2, h3 {
+        font-size: 22px;
+    }
+    
+    .section p, .section li {
+        font-size: 4vw; /* Ensure body text is readable */
+    }
+
+    /* FIGURES - Vertical stacking for mobile */
+    .figures {
+        /* 🔑 FIX: Overwrite grid to stack vertically on mobile */
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    figure {
+        width: 100%; /* Take full width on mobile */
+    }
+
+    /* FOOTER */
+    footer {
+        padding: 1rem 0;
+    }
+
+    footer p {
+        font-size: 12px;
+    }
+}
